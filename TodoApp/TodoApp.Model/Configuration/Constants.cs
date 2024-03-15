@@ -10,6 +10,5 @@ namespace TodoApp.Model.Configuration
     {
         public const string Done = "Done";
         public const string Canceled = "Canceled";
-        public const string Unmarked = "Unmarked";
     }
 }

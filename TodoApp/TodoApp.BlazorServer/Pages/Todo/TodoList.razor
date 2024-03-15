@@ -1,0 +1,73 @@
+﻿@page "/Todo/List"
+@using TodoApp.BlazorServer.Configuration
+@inject ITodoService _todoService
+
+<div class="card">
+    <div class="card-body">
+        <a href="/Todo/Create">Add New Todo</a>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Activies No</th>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (todos == null || todos.Count() <= 0)
+
+                {
+                    <tr>
+                        <th colspan="5">No Record Found!</th>
+                    </tr>
+                }
+                else
+                {
+
+
+                    @foreach (var item in todos)
+                    {
+                        increment++;
+                        <tr>
+                            <th scope="row">@increment</th>
+                            <td>@ConvertToCustomFormat(item.ActivitiesNo)</td>
+                            <td>@item.Subject</td>
+                            <td>@item.Description</td>
+                            <td>@(string.IsNullOrEmpty(item.Status) ? "Unmarked" : item.Status) </td>
+                            <td><a href="/Todo/Edit/@item.Id">Edit Todo</a></td>
+                            <td><a href="/Todo/Delete/@item.Id">Delete Todo</a></td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+@code {
+    private IList<TodoDto> todos;
+    private int increment = 0;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        string apiUrl = ApiEndpoint.GetTodosEndpoint;
+        todos = await _todoService.GetAll(apiUrl);
+    }
+
+    private string ConvertToCustomFormat(long value)
+    {
+        if (value <= 1000)
+        {
+            return $"AC-{value:D4}";
+        }
+        else
+        {
+            return $"AC-{value}";
+        }
+    }
+}

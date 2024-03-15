@@ -15,6 +15,7 @@ builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ITodoService, TodoService>();
 
 builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddScoped<AuthenticationProvider>();
