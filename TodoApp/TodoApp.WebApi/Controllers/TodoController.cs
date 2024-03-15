@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Security.Claims;
 using TodoApp.Model.Entities;
 using TodoApp.Service.Contract;
 using TodoApp.WebApi.DTO;
@@ -13,6 +14,7 @@ namespace TodoApp.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class TodoController : ControllerBase
     {
         private readonly ITodoService _todoService;
@@ -25,14 +27,27 @@ namespace TodoApp.WebApi.Controllers
             _mapper = mapper;
         }
 
+        private string GetUserId()
+        {
+            var userId = string.Empty;
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            if (identity != null)
+            {
+                userId = identity.FindFirst("sid").Value;
+            }
+
+            return userId;
+        }
+
         [HttpGet]
         [Route("GetTodos")]
         public async Task<ActionResult<List<TodoDto>>> Get()
         {
+            
             List<TodoDto> todoList = new List<TodoDto>();
             try
             {
-                var list = await _todoService.GetTodosAsync("f53f4178-8849-47f8-8b02-f871d36e8e05");
+                var list = await _todoService.GetTodosAsync(GetUserId());
 
                 if (list == null)
                 {
@@ -57,7 +72,7 @@ namespace TodoApp.WebApi.Controllers
             TodoDto todo = new TodoDto();
             try
             {
-                var getTodo = await _todoService.GetTodoAsync(new Guid(id), "f53f4178-8849-47f8-8b02-f871d36e8e05");
+                var getTodo = await _todoService.GetTodoAsync(new Guid(id), GetUserId());
                 if (getTodo == null)
                 {
                     return NotFound();
@@ -75,7 +90,6 @@ namespace TodoApp.WebApi.Controllers
 
         [HttpPost]
         [Route("AddTodo")]
-        [Authorize]
         public async Task<ActionResult<TodoDto>> Post(TodoDto todoDTO)
         {
             try
@@ -87,7 +101,7 @@ namespace TodoApp.WebApi.Controllers
                 }
                 var todo = _mapper.Map<TodoActivity>(todoDTO);
                 todo.Id = Guid.NewGuid();
-                todo.CreatedBy = "f53f4178-8849-47f8-8b02-f871d36e8e05";
+                todo.CreatedBy = GetUserId();
 
                 var result = await _todoService.CreateTodoAsync(todo);
 
@@ -110,12 +124,11 @@ namespace TodoApp.WebApi.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<ActionResult> Put(string id, TodoDto todoDTO)
         {
             try
             {
-                var getExisiting = await _todoService.GetTodoAsync(new Guid(id), "f53f4178-8849-47f8-8b02-f871d36e8e05");
+                var getExisiting = await _todoService.GetTodoAsync(new Guid(id), GetUserId());
             if (getExisiting == null)
                 {
                     return NotFound();
@@ -143,12 +156,11 @@ namespace TodoApp.WebApi.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<ActionResult> Delete(string id)
         {
             try
             {
-                var getExisiting = await _todoService.GetTodoAsync(new Guid(id), "f53f4178-8849-47f8-8b02-f871d36e8e05");
+                var getExisiting = await _todoService.GetTodoAsync(new Guid(id), GetUserId());
                 if (getExisiting == null)
                 {
                     return NotFound();
