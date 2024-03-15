@@ -45,7 +45,7 @@
         var result = await _autService.Register(userDto);
         if (result)
         {
-            _nav.NavigateTo("/");
+            _nav.NavigateTo("/Account/Login");
         }
         else
         {

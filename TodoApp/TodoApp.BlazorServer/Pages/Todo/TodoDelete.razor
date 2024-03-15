@@ -1,0 +1,88 @@
+﻿@page "/Todo/Delete/{Id}"
+@using TodoApp.BlazorServer.Configuration
+@inject ITodoService _todoService
+@inject NavigationManager _Nav
+
+
+@if (!IsSuccess)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+       <strong>Something went wrong! Can't delete maybe todo status is deleted or cancelled</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+@if (string.IsNullOrWhiteSpace(Id))
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Something went wrong!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (dto == null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Loading......</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else
+{
+
+
+    <div class="card" style="width: 36rem;">
+       
+        <div class="card-body">
+            <h5 class="card-title">Product Detail</h5>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Activies No: @ConvertToCustomFormat(dto.ActivitiesNo)</li>
+            <li class="list-group-item">Subject: @dto.Subject</li>
+            <li class="list-group-item">Description: @dto.Description</li>
+            <li class="list-group-item">Status: @(string.IsNullOrEmpty(dto.Status) ? "Unmarked" : dto.Status)</li>
+           
+        </ul>
+        <div @onclick="DeleteTodo" class="btn btn-danger">
+            <span class=" oi oi-delete"></span>
+            Delete Todo
+        </div>
+    </div>
+}
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private TodoDto dto = new TodoDto();
+    private bool IsSuccess = true;
+    protected override async Task OnInitializedAsync()
+    {
+        string apiUrl = ApiEndpoint.GetSingleTodoEndpoint;
+        dto = await _todoService.GetById(apiUrl, Id);
+    }
+    private async Task DeleteTodo()
+    {
+        string apiUrl = ApiEndpoint.DeleteTodoEndpoint;
+        IsSuccess = await _todoService.Delete(apiUrl, dto.Id.ToString());
+        if (IsSuccess)
+        {
+            _Nav.NavigateTo("/Todo/List");
+        }
+    }
+
+    private string ConvertToCustomFormat(long value)
+    {
+        if (value <= 1000)
+        {
+            return $"AC-{value:D4}";
+        }
+        else
+        {
+            return $"AC-{value}";
+        }
+    }
+   
+}
