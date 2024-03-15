@@ -35,10 +35,10 @@ namespace TodoApp.BlazorServer.Service
             return false;
         }
 
-        public async Task<bool> Delete(string url, int id)
+        public async Task<bool> Delete(string url, string id)
         {
             var request = new HttpRequestMessage(HttpMethod.Delete, url + id);
-            if (id <= 0)
+            if (string.IsNullOrEmpty(id))
             {
                 return false;
             }
@@ -73,10 +73,10 @@ namespace TodoApp.BlazorServer.Service
             throw new NotImplementedException();
         }
 
-        public async Task<bool> Update(string url, int id, T entity)
+        public async Task<bool> Update(string url, string id, T entity)
         {
             var request = new HttpRequestMessage(HttpMethod.Put, url + id);
-            if (id <= 0)
+            if (string.IsNullOrEmpty(id))
             {
                 return false;
             }
@@ -95,7 +95,7 @@ namespace TodoApp.BlazorServer.Service
             return await localStorageService.GetItemAsync<string>("AuthJwtToken");
         }
 
-        public async Task<T> GetById(string url, int id)
+        public async Task<T> GetById(string url, string id)
         {
             var request = new HttpRequestMessage(HttpMethod.Get, url + id);
 

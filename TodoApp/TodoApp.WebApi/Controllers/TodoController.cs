@@ -129,12 +129,12 @@ namespace TodoApp.WebApi.Controllers
             try
             {
                 var getExisiting = await _todoService.GetTodoAsync(new Guid(id), GetUserId());
-            if (getExisiting == null)
+                if (getExisiting == null)
                 {
                     return NotFound();
                 }
 
-                var todo = _mapper.Map(todoDTO, getExisiting);
+                var todo = _mapper.Map<TodoActivity>(todoDTO);
                 var result = await _todoService.UpdateTodoAsync(todo);
 
                 if (result.Result)

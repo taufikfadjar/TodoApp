@@ -1,0 +1,112 @@
+﻿@page "/Todo/Edit/{Id}"
+@using TodoApp.BlazorServer.Configuration
+@inject ITodoService _todoService
+@inject NavigationManager _Nav
+
+<h2>Edit</h2>
+
+@if (IsError)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Something went wrong!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+@if(string.IsNullOrWhiteSpace(Id))
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Something went wrong!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else if (dto==null)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Loading......</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+else
+{
+        
+
+ <EditForm Model="dto" OnValidSubmit="HandleTodoEdit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+        @if (!string.IsNullOrEmpty(dto.Status))
+        {
+            <div class="form-group">
+                <label for="exampleInputEmail1">Subject</label>
+                <input type="text" class="form-control" @bind-value="dto.Subject" disabled />
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Description</label>
+                <textarea class="form-control" rows="3" @bind="dto.Description" disabled />
+            </div>
+            <br />
+        }
+        else
+        {
+            <div class="form-group">
+                <label for="exampleInputEmail1">Subject</label>
+                <input type="text" class="form-control" @bind-value="dto.Subject" />
+            </div>
+            <br />
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">Description</label>
+                <textarea class="form-control" rows="3" @bind="dto.Description" />
+            </div>
+            <br />
+        }
+
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Status</label>
+            <select class="form-control" id="exampleFormControlSelect1" @bind="dto.Status">
+                <option value="">Unmarked</option>
+                <option value="Done">Done</option>
+                <option value="Canceled">Canceled</option>
+            </select>
+        </div>
+
+        <br />
+    <button type="submit" class="btn btn-primary">Submit</button>
+</EditForm>
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; }
+    private TodoDto dto = new TodoDto();
+    private bool IsError = false;
+    protected override async Task OnInitializedAsync()
+    {
+        string apiUrl = ApiEndpoint.GetSingleTodoEndpoint;
+        dto = await _todoService.GetById(apiUrl, Id);
+    }
+    protected async Task HandleTodoEdit()
+    {
+        var IsError = false;
+        string apiUrl = ApiEndpoint.EditTodoEndpoint;
+        var IsSuccess = await _todoService.Update(apiUrl, Id, dto);
+        if (IsSuccess)
+        {
+            _Nav.NavigateTo("/Todo/List");
+        }
+        else
+        {
+            IsError = true;
+        }
+
+    }
+}
