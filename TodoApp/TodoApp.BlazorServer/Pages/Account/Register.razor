@@ -1,5 +1,55 @@
-﻿<h3>Register</h3>
+﻿@page "/Account/Register"
+@inject NavigationManager _nav
+@inject IAuthService _autService
+
+
+@if (isError)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Someting went wrong!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<EditForm Model="userDto" OnValidSubmit="HandleRegistration">
+    <DataAnnotationsValidator/>
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>Full Name</label>
+        <InputText @bind-Value="userDto.FullName" class="form-control"/>
+    </div>
+    <br/>
+    <div class="form-group">
+        <label>User Name</label>
+        <InputText @bind-Value="userDto.UserName" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Password</label>
+        <InputText @bind-Value="userDto.Password" class="form-control" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Submit</button>
+
+</EditForm>
+
 
 @code {
-
+    UserDto userDto = new UserDto();
+    bool isError = false;
+    protected async Task HandleRegistration()
+    {
+        var result = await _autService.Register(userDto);
+        if (result)
+        {
+            _nav.NavigateTo("/");
+        }
+        else
+        {
+            isError = true;
+        }
+    }
 }
