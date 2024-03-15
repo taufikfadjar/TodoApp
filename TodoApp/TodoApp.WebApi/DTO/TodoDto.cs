@@ -1,17 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Numerics;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace TodoApp.Model.Entities
+﻿namespace TodoApp.WebApi.DTO
 {
-    public class TodoActivity
+    public class TodoDto
     {
-        [Key]
         public Guid Id { get; set; }
         public long ActivitiesNo { get; set; }
         public string? Subject { get; set; }

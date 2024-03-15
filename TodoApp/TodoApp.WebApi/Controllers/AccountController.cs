@@ -122,7 +122,6 @@ namespace TodoApp.WebApi.Controllers
                 return Problem(ex.ToString());
             }
 
-            return Ok();
         }
 
 

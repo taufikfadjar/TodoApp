@@ -9,7 +9,8 @@ namespace TodoApp.WebApi.Configuration
         public AutoMapperConfiguration() {
 
             CreateMap<UserDto, ApplicationUser>().ReverseMap();
-        
+            CreateMap<TodoDto, TodoActivity>().ReverseMap();
+
         }    
     }
 }
