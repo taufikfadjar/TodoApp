@@ -1,6 +1,9 @@
+using Blazored.LocalStorage;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
-using TodoApp.BlazorServer.Data;
+using System.IdentityModel.Tokens.Jwt;
+using TodoApp.BlazorServer.Configuration;
 using TodoApp.BlazorServer.Service;
 using TodoApp.BlazorServer.Service.Contract;
 
@@ -10,8 +13,14 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
-builder.Services.AddSingleton<WeatherForecastService>();
+
 builder.Services.AddScoped<IAuthService, AuthService>();
+
+builder.Services.AddBlazoredLocalStorage();
+builder.Services.AddScoped<AuthenticationProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(p =>
+    p.GetRequiredService<AuthenticationProvider>());
+builder.Services.AddScoped<JwtSecurityTokenHandler>();
 
 var app = builder.Build();
 

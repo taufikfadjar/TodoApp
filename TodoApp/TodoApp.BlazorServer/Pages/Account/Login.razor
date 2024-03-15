@@ -1,0 +1,50 @@
+﻿@page "/Account/Login"
+@inject NavigationManager _nav
+@inject IAuthService _autService
+
+
+@if (isError)
+{
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <strong>Someting went wrong!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+}
+
+<EditForm Model="loginDto" OnValidSubmit="HandleLogin">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label>User Name</label>
+        <InputText @bind-Value="loginDto.UserName" class="form-control" />
+    </div>
+    <br />
+    <div class="form-group">
+        <label>Password</label>
+        <InputText @bind-Value="loginDto.Password" class="form-control" />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-success">Submit</button>
+    <a href="/Account/Register">Don't have account ?</a>
+</EditForm>
+
+
+@code {
+    LoginDto loginDto = new LoginDto();
+    bool isError = false;
+    protected async Task HandleLogin()
+    {
+        var result = await _autService.Login(loginDto);
+        if (result)
+        {
+            _nav.NavigateTo("/");
+        }
+        else
+        {
+            isError = true;
+        }
+    }
+}
