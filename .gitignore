@@ -8,3 +8,5 @@
 /TodoApp/TodoApp.WebApi/obj/
 /TodoApp/TodoApp.Test/bin/
 /TodoApp/TodoApp.Test/obj/
+/TodoApp/TodoApp.BlazorServer/bin/
+/TodoApp/TodoApp.BlazorServer/obj/
