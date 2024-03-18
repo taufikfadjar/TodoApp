@@ -80,10 +80,34 @@ You can choose execute using visual studio or by using docker
   * For running two application on visual studio. You can right click on solution. Click properties and select multiple project
     Set action TodoApp.BlazorServer to start and set action TodoApp.WebApi to start then apply
 
+### Project structure
 
+   #### Web API
+   * TodoApp.WebApi : Web api application for handle user login & registration and todo api services
+   * TodoApp.Service : Project contains todo business logic
+   * TodoApp.Model : Project contains model and dbcontext
+
+   #### Web Client Blazor
+   * TodoApp.Blazor : Web apps for client which contain todo UI
+
+   #### Unit test
+   * TodoApp.Test : Project test for testing web api function
 
 ## Usage
--
+* User can access TodoApps
+![Home](https://github.com/taufikfadjar/TodoApp/blob/main/TodoApp/img/Home.png)
+
+* User can register user
+![Register](https://github.com/taufikfadjar/TodoApp/blob/main/TodoApp/img/Register.png)
+
+* User can login
+![Login](https://github.com/taufikfadjar/TodoApp/blob/main/TodoApp/img/Login.png)
+
+* User see todo list
+![Login](https://github.com/taufikfadjar/TodoApp/blob/main/TodoApp/img/TodoList.png)
+
+* User create todo list
+![Login](https://github.com/taufikfadjar/TodoApp/blob/main/TodoApp/img/Create.png)
 
 ## Product documentation
 - Bussiness requirement
