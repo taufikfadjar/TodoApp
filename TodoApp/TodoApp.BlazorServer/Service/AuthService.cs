@@ -14,16 +14,19 @@ namespace TodoApp.BlazorServer.Service
         private readonly IHttpClientFactory _httpClientFactory;
         private readonly ILocalStorageService _localStorageService;
         private readonly AuthenticationProvider _authenticationProvider;
+        private readonly IConfiguration _configuration;
         public AuthService(AuthenticationProvider authenticationProvider, 
-            IHttpClientFactory httpClientFactory, ILocalStorageService localStorageService) {
+            IHttpClientFactory httpClientFactory, ILocalStorageService localStorageService,
+            IConfiguration configuration) {
             _httpClientFactory = httpClientFactory;
             _localStorageService = localStorageService;
             _authenticationProvider = authenticationProvider;
+            _configuration = configuration;
         }
 
         public async Task<bool> Login(LoginDto dto)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, ApiEndpoint.AutLoginApiEndpoint)
+            var request = new HttpRequestMessage(HttpMethod.Post, _configuration["ApiEndPoint"] + ApiEndpoint.AutLoginApiEndpoint)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json")
             };
@@ -53,7 +56,7 @@ namespace TodoApp.BlazorServer.Service
 
         public async Task<bool> Register(UserDto dto)
         {
-            var request = new HttpRequestMessage(HttpMethod.Post, ApiEndpoint.AutRegisterApiEndpoint)
+            var request = new HttpRequestMessage(HttpMethod.Post, _configuration["ApiEndPoint"] + ApiEndpoint.AutRegisterApiEndpoint)
             {
                 Content = new StringContent(JsonConvert.SerializeObject(dto), Encoding.UTF8, "application/json")
             };

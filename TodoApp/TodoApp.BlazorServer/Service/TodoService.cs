@@ -6,7 +6,8 @@ namespace TodoApp.BlazorServer.Service
 {
     public class TodoService : BaseService<TodoDto>, ITodoService
     {
-        public TodoService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorageService) : base(httpClientFactory, localStorageService)
+        public TodoService(IHttpClientFactory httpClientFactory, ILocalStorageService localStorageService, 
+            IConfiguration configuration) : base(httpClientFactory, localStorageService, configuration)
         {
         }
     }
