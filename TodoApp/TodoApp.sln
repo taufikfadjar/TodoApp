@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Model", "TodoApp.Mo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Service", "TodoApp.Service\TodoApp.Service.csproj", "{F05450F1-CE31-413F-BC20-C9CBADEE8AF5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.Test", "TodoApp.Test\TodoApp.Test.csproj", "{CAFDBC81-9499-4899-8919-9C624A2976B7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.Test", "TodoApp.Test\TodoApp.Test.csproj", "{CAFDBC81-9499-4899-8919-9C624A2976B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoApp.BlazorServer", "TodoApp.BlazorServer\TodoApp.BlazorServer.csproj", "{60B04F45-4DF2-4F86-8554-60D85459AA42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoApp.BlazorServer", "TodoApp.BlazorServer\TodoApp.BlazorServer.csproj", "{60B04F45-4DF2-4F86-8554-60D85459AA42}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
