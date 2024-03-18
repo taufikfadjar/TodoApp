@@ -10,3 +10,4 @@
 /TodoApp/TodoApp.Test/obj/
 /TodoApp/TodoApp.BlazorServer/bin/
 /TodoApp/TodoApp.BlazorServer/obj/
+/TodoApp/TodoApp.WebApi/todos.db
